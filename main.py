@@ -18,8 +18,8 @@ W, H = 700, 700
 draw = Draw(W, H, window_name = "Canvas", mouse_callback = add_waypoint)
 
 car = Car(50, 50)
-controller = Controller(kp_linear = 0.1, kd_linear = 0.1, ki_linear = 0,
-						kp_angular = 0.3, kd_angular = 0.1, ki_angular = 0)
+controller = Controller(kp_linear = 0.1, kd_linear = 0, ki_linear = 0,
+						kp_angular = 3, kd_angular = 0.01, ki_angular = 0)
 
 lw = 0
 rw = 0
@@ -35,7 +35,7 @@ while True:
 	k = draw.show()
 
 	x, _ = car.get_state()
-	if len(way_points)>0:
+	if len(way_points)>0 and current_idx != len(way_points):
 		goal_pt = way_points[current_idx]
 		linear_v, angular_v = controller.get_control_inputs(x, goal_pt, car.get_points()[2])
 		dist = get_distance(x[0, 0], x[1, 0], goal_pt[0], goal_pt[1])

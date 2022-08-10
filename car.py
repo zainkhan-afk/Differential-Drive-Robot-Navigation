@@ -65,16 +65,12 @@ class Car:
 							[self.x_dot[0, 0]],
 							[self.x_dot[2, 0]]
 						])
-		# print(self.x.shape, A.shape, B.shape, vel.shape)
 		self.x = A@self.x + B@vel
-		# if self.x[2, 0]>np.pi:
-		# 	self.x[2, 0] = -np.pi
-
-		# if self.x[2, 0]<-np.pi:
-		# 	self.x[2, 0] = np.pi
 
 
 	def update(self, dt):
+		self.wheel_speed[self.wheel_speed>2] = 2;
+		self.wheel_speed[self.wheel_speed<-2] = -2;
 		self.x_dot = self.forward_kinematics()
 		self.update_state(dt)
 		self.wheel_speed = self.inverse_kinematics()

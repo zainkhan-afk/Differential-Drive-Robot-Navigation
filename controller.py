@@ -25,7 +25,7 @@ class Controller:
 
 		error_angle = body_to_nose - body_to_goal
 
-		print(round(body_to_goal, 3), round(x[2, 0], 3), round(error_angle, 3))
+		print(round(body_to_goal, 3), round(body_to_nose, 3), round(error_angle, 3), round(x[2, 0], 3))
 
 		linear_velocity_control = self.kp_linear*error_position + self.kd_linear*(error_position - self.prev_error_position)
 		angular_velocity_control = self.kp_angular*error_angle + self.kd_angular*(error_angle - self.prev_error_angle)
