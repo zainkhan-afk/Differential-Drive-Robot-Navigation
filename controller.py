@@ -16,21 +16,30 @@ class Controller:
 		self.prev_error_position = 0
 		self.prev_error_angle = 0
 
+		self.prev_body_to_goal = 0
+		self.prev_waypoint_idx = -1
 
-	def get_control_inputs(self, x, goal_x, nose):
+
+	def get_control_inputs(self, x, goal_x, nose, waypoint_idx):
 		error_position = get_distance(x[0, 0], x[1, 0], goal_x[0], goal_x[1])
 		
 		body_to_goal = get_angle(x[0, 0], x[1, 0], goal_x[0], goal_x[1])
 		body_to_nose = get_angle(x[0, 0], x[1, 0], nose[0], nose[1])
 
-		error_angle = body_to_nose - body_to_goal
+		# if self.prev_waypoint_idx == waypoint_idx and 350<(abs(self.prev_body_to_goal - body_to_goal)*180/np.pi):
+		# 	print("HERE")
+		# 	body_to_goal = self.prev_body_to_goal
+		error_angle = (-body_to_goal) - x[2, 0]
 
-		print(round(body_to_goal, 3), round(body_to_nose, 3), round(error_angle, 3), round(x[2, 0], 3))
+		print(round(body_to_goal*180/np.pi, 1), round(body_to_nose*180/np.pi, 1), round(x[2, 0]*180/np.pi, 1))
 
 		linear_velocity_control = self.kp_linear*error_position + self.kd_linear*(error_position - self.prev_error_position)
 		angular_velocity_control = self.kp_angular*error_angle + self.kd_angular*(error_angle - self.prev_error_angle)
 
 		self.prev_error_angle = error_angle
 		self.prev_error_position = error_position
+
+		self.prev_waypoint_idx = waypoint_idx
+		self.prev_body_to_goal = body_to_goal
 
 		return linear_velocity_control, angular_velocity_control

@@ -22,12 +22,20 @@ class Car:
 		self.b = 25
 		self.r = 5
 
+		# self.car_dims = np.array([
+		# 								[-self.b, -self.b, 1],
+		# 								[-self.b,  0, 1],
+		# 								[ 0,  self.b, 1],
+		# 								[ self.b, 0, 1],
+		# 								[ self.b, -self.b, 1]
+		# 							])
+
 		self.car_dims = np.array([
 										[-self.b, -self.b, 1],
-										[-self.b,  0, 1],
-										[ 0,  self.b, 1],
-										[ self.b, 0, 1],
-										[ self.b, -self.b, 1]
+										[0 		, -self.b, 1],
+										[ self.b,  		0, 1],
+										[ 0, 	   self.b, 1],
+										[ -self.b, self.b, 1]
 									])
 
 		self.get_transformed_pts()
@@ -56,8 +64,8 @@ class Car:
 						[0, 0, 1]
 					])
 		B = np.array([
-						[np.sin(self.x[2, 0])*dt,  0],
-						[np.cos(self.x[2, 0])*dt,  0],
+						[np.sin(self.x[2, 0] + np.pi/2)*dt,  0],
+						[np.cos(self.x[2, 0] + np.pi/2)*dt,  0],
 						[0					 , dt]
 					])
 
@@ -66,6 +74,7 @@ class Car:
 							[self.x_dot[2, 0]]
 						])
 		self.x = A@self.x + B@vel
+		print(self.x[2, 0])
 
 
 	def update(self, dt):
@@ -83,7 +92,7 @@ class Car:
 		kine_mat = np.array([
 							[self.r/2  		  , self.r/2],
 							[0 		 		  ,	0],
-							[self.r/(2*self.b), -1*self.r/(2*self.b)]
+							[self.r/(2*self.b), -self.r/(2*self.b)]
 							])
 
 		return kine_mat@self.wheel_speed
