@@ -38,6 +38,15 @@ class Car:
 										[rw_speed],
 										[lw_speed]
 									])
+		self.x_dot = self.forward_kinematics()
+
+	def set_robot_velocity(self, linear_velocity, angular_velocity):
+		self.x_dot = np.array([
+										[linear_velocity],
+										[0],
+										[angular_velocity]
+									])
+		self.wheel_speed = self.inverse_kinematics()
 
 
 	def update_state(self, dt):
@@ -56,8 +65,13 @@ class Car:
 							[self.x_dot[0, 0]],
 							[self.x_dot[2, 0]]
 						])
-
+		# print(self.x.shape, A.shape, B.shape, vel.shape)
 		self.x = A@self.x + B@vel
+		# if self.x[2, 0]>np.pi:
+		# 	self.x[2, 0] = -np.pi
+
+		# if self.x[2, 0]<-np.pi:
+		# 	self.x[2, 0] = np.pi
 
 
 	def update(self, dt):
@@ -66,7 +80,7 @@ class Car:
 		self.wheel_speed = self.inverse_kinematics()
 
 
-	def get_position(self):
+	def get_state(self):
 		return self.x, self.x_dot
 
 	def forward_kinematics(self):
