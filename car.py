@@ -22,14 +22,6 @@ class Car:
 		self.b = 25
 		self.r = 5
 
-		# self.car_dims = np.array([
-		# 								[-self.b, -self.b, 1],
-		# 								[-self.b,  0, 1],
-		# 								[ 0,  self.b, 1],
-		# 								[ self.b, 0, 1],
-		# 								[ self.b, -self.b, 1]
-		# 							])
-
 		self.car_dims = np.array([
 										[-self.b, -self.b, 1],
 										[0 		, -self.b, 1],
@@ -74,7 +66,6 @@ class Car:
 							[self.x_dot[2, 0]]
 						])
 		self.x = A@self.x + B@vel
-		print(self.x[2, 0])
 
 
 	def update(self, dt):

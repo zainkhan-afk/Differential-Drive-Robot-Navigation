@@ -31,8 +31,6 @@ class Controller:
 		# 	body_to_goal = self.prev_body_to_goal
 		error_angle = (-body_to_goal) - x[2, 0]
 
-		print(round(body_to_goal*180/np.pi, 1), round(body_to_nose*180/np.pi, 1), round(x[2, 0]*180/np.pi, 1))
-
 		linear_velocity_control = self.kp_linear*error_position + self.kd_linear*(error_position - self.prev_error_position)
 		angular_velocity_control = self.kp_angular*error_angle + self.kd_angular*(error_angle - self.prev_error_angle)
 
@@ -41,5 +39,10 @@ class Controller:
 
 		self.prev_waypoint_idx = waypoint_idx
 		self.prev_body_to_goal = body_to_goal
+
+		if linear_velocity_control>10:
+			linear_velocity_control = 10
+
+		print(round(linear_velocity_control, 2), round(angular_velocity_control, 2))
 
 		return linear_velocity_control, angular_velocity_control

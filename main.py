@@ -18,8 +18,8 @@ W, H = 700, 700
 draw = Draw(W, H, window_name = "Canvas", mouse_callback = add_waypoint)
 
 car = Car(50, 50)
-controller = Controller(kp_linear = 0.1, kd_linear = 0, ki_linear = 0,
-						kp_angular = 1, kd_angular = 0, ki_angular = 0)
+controller = Controller(kp_linear = 0.5, kd_linear = 0.1, ki_linear = 0,
+						kp_angular = 3, kd_angular = 1, ki_angular = 0)
 
 lw = 0
 rw = 0
