@@ -37,8 +37,6 @@ class Draw:
 							(points[i+1][0], points[i+1][1]), 
 							color, thickness)
 
-		# cv2.circle(self.canvas, (points[-1][0], points[-1][1]), 2, (255, 255, 0), thickness)
-
 	def add_text(self, text, color = (255, 0, 0), thickness = 2, fontScale = 1, org = (100, 50)):
 		font = cv2.FONT_HERSHEY_SIMPLEX
 		cv2.putText(self.canvas, text, org, font, 
