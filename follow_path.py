@@ -14,7 +14,7 @@ draw = Draw(W, H, window_name = "Canvas")
 car_mpc = Car(50, 50)
 car_pid = Car(50, 50)
 controller_pid = PID(kp_linear = 0.5, kd_linear = 0.1, ki_linear = 0,
-						kp_angular = 3, kd_angular = 1, ki_angular = 0)
+						kp_angular = 3, kd_angular = 0.1, ki_angular = 0)
 horizon = 5
 controller_mpc = MPC(horizon = horizon)
 
@@ -46,8 +46,8 @@ while True:
 	draw.draw(car_mpc.get_points(), color = (0, 255, 0))
 	draw.draw(car_pid.get_points(), color = (0, 0, 255))
 
-	draw.add_text("PID Controlled Car", color = (0, 0, 255), fontScale = 0.5, org = (100, 50))
-	draw.add_text("MPC Controlled Car", color = (0, 255, 0), fontScale = 0.5, org = (100, 75))
+	draw.add_text("PID Controller", color = (0, 0, 255), fontScale = 0.5, org = (100, 50))
+	draw.add_text("MPC Controller", color = (0, 255, 0), fontScale = 0.5, org = (100, 75))
 	draw.add_text("Trajectory", color = (255, 0, 0), fontScale = 0.5, org = (100, 100))
 	
 

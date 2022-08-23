@@ -42,8 +42,8 @@ class PID:
 		self.prev_waypoint_idx = waypoint_idx
 		self.prev_body_to_goal = body_to_goal
 
-		if linear_velocity_control>10:
-			linear_velocity_control = 10
+		if linear_velocity_control>5:
+			linear_velocity_control = 5
 
 		return linear_velocity_control, angular_velocity_control
 
@@ -71,7 +71,7 @@ class MPC:
 			controller_car.update(0.5)
 			x, _ = controller_car.get_state()
 			z_k[:,i] = [x[0, 0], x[1, 0]]
-			# cost += np.sum(self.R@(u_k[:,i]**2))
+			cost += np.sum(self.R@(u_k[:,i]**2))
 			cost += np.sum(self.Q@((desired_state[:,i]-z_k[:,i])**2))
 			if i < (self.horizon-1):     
 				cost += np.sum(self.Rd@((u_k[:,i+1] - u_k[:,i])**2))
