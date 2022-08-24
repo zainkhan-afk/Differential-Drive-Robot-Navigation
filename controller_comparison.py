@@ -35,7 +35,7 @@ pid_car_points = []
 while True:
 	draw.clear()
 	if len(way_points)>0:
-		draw.draw_path(way_points, color = (255, 0, 0), thickness = 3)
+		draw.draw_path(way_points, color = (255, 0, 0), thickness = 1)
 
 	if len(mpc_car_points)>0:
 		draw.draw_path(mpc_car_points, color = (0, 255, 0), thickness = 1, dotted = True)
@@ -43,12 +43,12 @@ while True:
 	if len(pid_car_points)>0:
 		draw.draw_path(pid_car_points, color = (0, 0, 255), thickness = 1, dotted = True)
 
-	draw.draw(car_mpc.get_points(), color = (0, 255, 0))
-	draw.draw(car_pid.get_points(), color = (0, 0, 255))
+	draw.draw(car_mpc.get_points(), color = (0, 255, 0), thickness = 1)
+	draw.draw(car_pid.get_points(), color = (0, 0, 255), thickness = 1)
 
-	draw.add_text("PID Controller", color = (0, 0, 255), fontScale = 0.5, org = (100, 50))
-	draw.add_text("MPC Controller", color = (0, 255, 0), fontScale = 0.5, org = (100, 75))
-	draw.add_text("Trajectory", color = (255, 0, 0), fontScale = 0.5, org = (100, 100))
+	draw.add_text("PID Controller", color = (0, 0, 255), fontScale = 0.5, thickness = 1, org = (100, 50))
+	draw.add_text("MPC Controller", color = (0, 255, 0), fontScale = 0.5, thickness = 1, org = (100, 75))
+	draw.add_text("Trajectory", color = (255, 0, 0), fontScale = 0.5, thickness = 1, org = (100, 100))
 	
 
 	k = draw.show()
@@ -59,7 +59,6 @@ while True:
 		mpc_car_points.append([int(x[0, 0]), int(x[1, 0])])
 		goal_pt = way_points[current_idx_mpc]
 		linear_v, angular_v = controller_mpc.optimize(car = car_mpc, points = way_points[current_idx_mpc:current_idx_mpc+horizon])
-		# linear_v, angular_v = controller.get_control_inputs(x, goal_pt, car.get_points()[2], current_idx)
 		dist = get_distance(x[0, 0], x[1, 0], goal_pt[0], goal_pt[1])
 		if dist<10:
 			current_idx_mpc+= 1
@@ -75,7 +74,6 @@ while True:
 	if len(way_points)>0 and current_idx_pid != len(way_points):
 		pid_car_points.append([int(x[0, 0]), int(x[1, 0])])
 		goal_pt = way_points[current_idx_pid]
-		# linear_v, angular_v = controller_mpc.optimize(car = car_pid, points = way_points[current_idx_pid:current_idx_pid+horizon])
 		linear_v, angular_v = controller_pid.get_control_inputs(x, goal_pt, car_pid.get_points()[2], current_idx_pid)
 		dist = get_distance(x[0, 0], x[1, 0], goal_pt[0], goal_pt[1])
 		if dist<10:
