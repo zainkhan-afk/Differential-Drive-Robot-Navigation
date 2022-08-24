@@ -1,6 +1,6 @@
 from car import Car
 from draw import Draw
-from controller import PID, MPC
+from controllers import PID, MPC
 import cv2
 from utils import *
 import numpy as np

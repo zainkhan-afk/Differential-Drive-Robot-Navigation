@@ -1,6 +1,6 @@
 from car import Car
 from draw import Draw
-from controller import PID
+from controllers import PID
 import cv2
 from utils import *
 
@@ -19,24 +19,32 @@ draw = Draw(W, H, window_name = "Canvas", mouse_callback = add_waypoint)
 
 car = Car(50, 50)
 controller = PID(kp_linear = 0.5, kd_linear = 0.1, ki_linear = 0,
-						kp_angular = 3, kd_angular = 1, ki_angular = 0)
+						kp_angular = 3, kd_angular = 0.1, ki_angular = 0)
 
 lw = 0
 rw = 0
 current_idx = 0
 linear_v = 0
 angular_v = 0
+car_path_points = []
 while True:
 	draw.clear()
+	draw.add_text("Press right click to place waypoint, press left click to remove a way point", 
+					color = (0, 0, 0), fontScale = 0.5, thickness = 1, org = (50, 15))
 	if len(way_points)>0:
-		draw.draw_path(way_points, color = (255, 0, 0), thickness = 2)
-	draw.draw(car.get_points(), color = (0, 255, 0))
+		draw.draw_path(way_points, color = (200, 200, 200), thickness = 1)
+
+	if len(car_path_points)>0:
+		draw.draw_path(car_path_points, color = (255, 0, 0), thickness = 1, dotted = True)
+
+	draw.draw(car.get_points(), color = (255, 0, 0), thickness = 1)
 	
 
 	k = draw.show()
 
 	x, _ = car.get_state()
 	if len(way_points)>0 and current_idx != len(way_points):
+		car_path_points.append([int(x[0, 0]), int(x[1, 0])])
 		goal_pt = way_points[current_idx]
 		linear_v, angular_v = controller.get_control_inputs(x, goal_pt, car.get_points()[2], current_idx)
 		dist = get_distance(x[0, 0], x[1, 0], goal_pt[0], goal_pt[1])
