@@ -22,3 +22,9 @@ python controller_comparison.py
 ```
 
 This will start the program where two cars (one controlled by MPC and the other by PID) have to follow a predefined path.
+
+The gif below shows the result of the controller comparison.
+
+<p align="center">
+  <img src="media/MPC_PID_Comparison.gif" alt="Controller Comparison gif" />
+</p>
