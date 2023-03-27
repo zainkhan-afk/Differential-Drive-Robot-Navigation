@@ -1,30 +1,25 @@
 # Differential Drive Robot Navigation
 
-This repository simulates a two wheeled differential drive robot. The robot is placed in an empty environment and it follows a path. The robot can follow a given path using either a PID controller or a Model Predictive Controller (MPC).
+This repository is a fork of a project that simulates a two wheeled differential drive robot. The robot is placed in an environment and it follows a target. I have made changes so that the robot can be controlled by variables set in the program. Also, tried to create a neural network that will control it move closer to the target and simultaneuosly avoid the obstacles. 
 
-## Simulation Details
-The mathematical models of robot kinematics and state update are used to simulate the robot movement. The robot inputs are the linear and angular velocities and the robot state consists of `x`, `y` and `θ`. The MPC and the PID controllers try to minimize the distance and angle between the robot centroid and the path point which in turn makes the robot follow its path. 
-
-The robot is rendered using openCV.
-
-## Running the code
-You can either run the `main.py` file or the `controller_comparison.py`. When running the `main.py` the following command should be type:
-
-```
-python main.py controller_name
-```
-
-Where `controller_name` can either be `MPC` or `PID`. Once the `main.py` if executed the user has to click on the screen to place way points and the robot will try to follow the path.
-
-Users can alternatively run the following command:
-```
-python controller_comparison.py
-```
-
-This will start the program where two cars (one controlled by MPC and the other by PID) have to follow a predefined path.
-
-The gif below shows the result of the controller comparison.
+In Figure "Neural Network" you can see the neural network that I created for this task. Whenever the
+obstacle sensor hits the obstacle, it activates the opposite motor. For example, if LO = 1, then
+RM = -1. I implemented it by comparing the coordinates of the sensor and the obstacle itself, so
+when they are equal, the robot knows that it is hitting the obstacle and activates the output. For
+the light sensor to work, the robot measures the distance to the light source from each sensor and
+finds the difference. So, if the left sensor minus right sensor is bigger than the constant, it meansthat the light source is closer to the right sensor, therefore it activates the RO = 1. The light
+sensor is located at the exact coordinates and it is hard coded there. So, the robot is calculating
+the distance to a certain point, not to the object.
+The neural network works this way: the robot is driving towards the light source and if it hits the
+obstacle it backs up a little and continues its journey. The formula for the left motor is (0.3*rl -
+1*ro)*2, where 0.3 is the weight of the light sensor, rl = right light source, -1 weight of the
+obstacle sensor, ro = right obstacle sensor. I know that the robot is not working perfectly, but this
+is due to the limited number of sensors.  
 
 <p align="center">
-  <img src="media/MPC_PID_Comparison.gif" alt="Controller Comparison gif" />
+  <img src="changes/img1.jpg" alt="Obstacle avoidance program" />
+</p>
+
+<p align="center">
+  <img src="changes/img2.png" alt="Neural network" />
 </p>
