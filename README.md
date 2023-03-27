@@ -20,14 +20,14 @@ is due to the limited number of sensors.
 
 <p align="center">
   <img src="changes/img1.jpg" alt="Obstacle avoidance program" />
-  <figcaption>
-  labelname :: Figure 1.
+  <figcaption aligh="center">
+  Figure 1.
   </figcaption>
 </p>
 
 <p align="center">
   <img src="changes/img2.png" alt="Neural network" />
-  <figcaption>
-  labelname :: Figure 2.
+  <figcaption aligh="center">
+  Figure 2.
   </figcaption>
 </p>
