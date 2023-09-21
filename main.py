@@ -73,7 +73,7 @@ while True:
 			linear_v, angular_v = controller.get_control_inputs(x, goal_pt, car.get_points()[2], current_idx)
 		
 		if controller_name == "MPC":
-			linear_v, angular_v = controller.optimize(car = car, points = way_points[current_idx:current_idx+horizon])
+			linear_v, angular_v = controller.optimize(car = car, goal_x = goal_pt)
 		
 		dist = get_distance(x[0, 0], x[1, 0], goal_pt[0], goal_pt[1])
 		if dist<10:

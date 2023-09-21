@@ -56,13 +56,13 @@ class MPC:
 		self.Q = np.diag([1.0, 1.0])                   # state cost matrix
 		self.Qf = self.Q							   # state final matrix
 
-	def cost(self, u_k, car, path):
-		path = np.array(path)
+	def cost(self, u_k, car, goal_x):
+		goal_x = np.array(goal_x)
 		controller_car = deepcopy(car)
 		u_k = u_k.reshape(self.horizon, 2).T
 		z_k = np.zeros((2, self.horizon+1))
 
-		desired_state = path.T
+		desired_state = goal_x
 
 		cost = 0.0
 
@@ -72,14 +72,13 @@ class MPC:
 			x, _ = controller_car.get_state()
 			z_k[:,i] = [x[0, 0], x[1, 0]]
 			cost += np.sum(self.R@(u_k[:,i]**2))
-			cost += np.sum(self.Q@((desired_state[:,i]-z_k[:,i])**2))
+			cost += np.sum(self.Q@((desired_state-z_k[:,i])**2))
 			if i < (self.horizon-1):     
 				cost += np.sum(self.Rd@((u_k[:,i+1] - u_k[:,i])**2))
 
 		return cost
 
-	def optimize(self, car, points):
-		self.horizon = len(points)
+	def optimize(self, car, goal_x):
 		bnd = [(0, 5),(np.deg2rad(-60), np.deg2rad(60))]*self.horizon
-		result = minimize(self.cost, args=(car, points), x0 = np.zeros((2*self.horizon)), method='SLSQP', bounds = bnd)
+		result = minimize(self.cost, args=(car, goal_x), x0 = np.zeros((2*self.horizon)), method='SLSQP', bounds = bnd)
 		return result.x[0],  result.x[1]
