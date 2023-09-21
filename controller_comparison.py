@@ -58,7 +58,7 @@ while True:
 	if len(way_points)>0 and current_idx_mpc != len(way_points):
 		mpc_car_points.append([int(x[0, 0]), int(x[1, 0])])
 		goal_pt = way_points[current_idx_mpc]
-		linear_v, angular_v = controller_mpc.optimize(car = car_mpc, points = way_points[current_idx_mpc:current_idx_mpc+horizon])
+		linear_v, angular_v = controller_mpc.optimize(car = car_mpc, goal_x = goal_pt)
 		dist = get_distance(x[0, 0], x[1, 0], goal_pt[0], goal_pt[1])
 		if dist<10:
 			current_idx_mpc+= 1
