@@ -2,6 +2,7 @@ import numpy as np
 from utils import *
 from copy import deepcopy
 from scipy.optimize import minimize
+from parameters import *
 
 class PID:
 	def __init__(self, 
@@ -42,8 +43,8 @@ class PID:
 		self.prev_waypoint_idx = waypoint_idx
 		self.prev_body_to_goal = body_to_goal
 
-		if linear_velocity_control>5:
-			linear_velocity_control = 5
+		if linear_velocity_control>MAX_LINEAR_VELOCITY:
+			linear_velocity_control = MAX_LINEAR_VELOCITY
 
 		return linear_velocity_control, angular_velocity_control
 
@@ -68,7 +69,7 @@ class MPC:
 
 		for i in range(self.horizon):
 			controller_car.set_robot_velocity(u_k[0,i], u_k[1,i])
-			controller_car.update(0.5)
+			controller_car.update(DELTA_T)
 			x, _ = controller_car.get_state()
 			z_k[:,i] = [x[0, 0], x[1, 0]]
 			cost += np.sum(self.R@(u_k[:,i]**2))
@@ -79,6 +80,6 @@ class MPC:
 		return cost
 
 	def optimize(self, car, goal_x):
-		bnd = [(0, 5),(np.deg2rad(-60), np.deg2rad(60))]*self.horizon
+		bnd = [(MIN_LINEAR_VELOCITY, MAX_LINEAR_VELOCITY), (MIN_WHEEL_ROT_SPEED_RAD, MAX_WHEEL_ROT_SPEED_RAD)]*self.horizon
 		result = minimize(self.cost, args=(car, goal_x), x0 = np.zeros((2*self.horizon)), method='SLSQP', bounds = bnd)
 		return result.x[0],  result.x[1]

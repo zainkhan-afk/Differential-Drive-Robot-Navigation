@@ -4,6 +4,7 @@ from controllers import PID, MPC
 import cv2
 from utils import *
 import argparse
+from parameters import *
 
 
 parser = argparse.ArgumentParser(description='Process some integers.')
@@ -23,7 +24,7 @@ if controller_name not in ["PID", "MPC"]:
 print(f"Using {controller_name} Controller.")
 
 way_points = []
-horizon = 5
+
 def add_waypoint(event, x, y, flags, param):
     global way_points
     if event == cv2.EVENT_LBUTTONDOWN:
@@ -31,8 +32,7 @@ def add_waypoint(event, x, y, flags, param):
     if event == cv2.EVENT_RBUTTONDOWN:
         way_points.pop()
 
-W, H = 700, 700
-draw = Draw(W, H, window_name = "Canvas", mouse_callback = add_waypoint)
+draw = Draw(VIEW_W, VIEW_H, window_name = "Canvas", mouse_callback = add_waypoint)
 
 car = Car(50, 50)
 
@@ -40,7 +40,7 @@ if controller_name == "PID":
 	controller = PID(kp_linear = 0.5, kd_linear = 0.1, ki_linear = 0,
 							kp_angular = 3, kd_angular = 0.1, ki_angular = 0)
 if controller_name == "MPC":
-	controller = MPC(horizon = horizon)
+	controller = MPC(horizon = MPC_HORIZON)
 
 
 lw = 0
@@ -82,7 +82,7 @@ while True:
 		linear_v = 0
 		angular_v = 0
 	car.set_robot_velocity(linear_v, angular_v)
-	car.update(0.5)
+	car.update(DELTA_T)
 
 	if k == ord("q"):
 		break

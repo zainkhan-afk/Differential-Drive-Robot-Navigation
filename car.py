@@ -1,4 +1,5 @@
 import numpy as np
+from parameters import *
 
 class Car:
 	def __init__(self, x, y):
@@ -69,8 +70,8 @@ class Car:
 
 
 	def update(self, dt):
-		self.wheel_speed[self.wheel_speed>2] = 2;
-		self.wheel_speed[self.wheel_speed<-2] = -2;
+		self.wheel_speed[self.wheel_speed>MAX_WHEEL_ROT_SPEED_RAD] = MAX_WHEEL_ROT_SPEED_RAD;
+		self.wheel_speed[self.wheel_speed<MIN_WHEEL_ROT_SPEED_RAD] = MIN_WHEEL_ROT_SPEED_RAD;
 		self.x_dot = self.forward_kinematics()
 		self.update_state(dt)
 		self.wheel_speed = self.inverse_kinematics()
