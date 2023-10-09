@@ -1,10 +1,13 @@
-# Differential Drive Robot Navigation
+Task 1. In this task we were supposed to create a foundation of the program which includes
+drawing the robot, making it move, and creating a differential drive. There were several possible
+solutions to this problem. First, I wanted to use Matlab and its toolboxes, however my peers
+immediately warned that it was restricted to use. Then, I tried drawing the robot through pygame
+using Python and that also did not work out well. Then after getting some inspiration from the
+github I finally managed to draw the robot and move it differentially, which you can see from the
+video. The commentaries about the code and how I got it are in the code. Figure 1 shows the
+output of the program. The front of the robot is where two circles are located.
 
-### Forked repo
-This repository is a fork of a project that simulates a two wheeled differential drive robot. The robot is placed in an environment and it follows a target. I have made changes so that the robot can be controlled by variables set in the program. Also, tried to create a neural network that will control it move closer to the target and simultaneuosly avoid the obstacles. 
-
-### Neural Network
-In Figure 2 you can see the neural network that I created for this task. Whenever the
+Task 2. In Figure 2 you can see the neural network that I created for this task. Whenever the
 obstacle sensor hits the obstacle, it activates the opposite motor. For example, if LO = 1, then
 RM = -1. I implemented it by comparing the coordinates of the sensor and the obstacle itself, so
 when they are equal, the robot knows that it is hitting the obstacle and activates the output. For
@@ -16,18 +19,4 @@ The neural network works this way: the robot is driving towards the light source
 obstacle it backs up a little and continues its journey. The formula for the left motor is (0.3*rl -
 1*ro)*2, where 0.3 is the weight of the light sensor, rl = right light source, -1 weight of the
 obstacle sensor, ro = right obstacle sensor. I know that the robot is not working perfectly, but this
-is due to the limited number of sensors.  
-
-<p align="center">
-  <img src="changes/img1.jpg" alt="Obstacle avoidance program" />
-  <figcaption aligh="center">
-  Figure 1.
-  </figcaption>
-</p>
-
-<p align="center">
-  <img src="changes/img2.png" alt="Neural network" />
-  <figcaption aligh="center">
-  Figure 2.
-  </figcaption>
-</p>
+is due to the limited number of sensors.
