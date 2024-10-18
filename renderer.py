@@ -1,4 +1,5 @@
 import pygame
+import numpy as np
 
 class Car:
     def __init__(self, x, y, rotation):
@@ -62,15 +63,33 @@ if __name__ == "__main__":
         renderer.clear()
         renderer.render(c)
 
-        c.x += 5
+        rot = -c.rotation / 180 * np.pi
+        R = np.array([
+            [np.cos(rot), np.sin(rot)],
+            [-np.sin(rot), np.cos(rot)]
+        ])
+
+        v = R@np.array([[5, 0]]).T
+
+        c.x += v[0, 0]
+        c.y += v[1, 0]
 
 
         if c.x > renderer.width:
             c.x = 0
-            c.rotation += 5
+
+        elif c.x < 0:
+            c.x = renderer.width
+
+        if c.y > renderer.height:
+            c.y = 0
+
+        elif c.y < 0:
+            c.y = renderer.height
+        
+        c.rotation += (0.5 - np.random.random())*12
 
         pygame.display.flip()
         clock.tick(60)
 
     pygame.quit()
-        
