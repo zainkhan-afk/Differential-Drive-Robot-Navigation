@@ -7,6 +7,12 @@ class Car:
         self.y = y
         self.rotation = rotation
 
+        self.wheelbase_width = 25
+        self.wheel_radius = 5
+
+    def update(self, state):
+        pass
+
 class Renderer:
     def __init__(self, width = 1000, height = 700, title = "Delaunay Triangulation"):
         self.width  = width
@@ -59,6 +65,13 @@ if __name__ == "__main__":
         for event in pygame.event.get():
             if event.type == pygame.QUIT:
                 running = False
+
+            if event.type == pygame.MOUSEBUTTONUP:
+                if event.button == 1:
+                    print("LEFT CLICK", pygame.mouse.get_pos())
+
+                if event.button == 3:
+                    print("RIGHT CLICK", pygame.mouse.get_pos())
         
         renderer.clear()
         renderer.render(c)

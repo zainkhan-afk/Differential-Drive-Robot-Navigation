@@ -1,5 +1,6 @@
 from car import Car
 from draw import Draw
+from renderer import Renderer
 from controllers import PID, MPC
 import cv2
 from utils import *
